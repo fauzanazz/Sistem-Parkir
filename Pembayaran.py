@@ -1,10 +1,10 @@
 from HitungWaktu import total_waktu
 from Input import *
 
-if jenis == "Mobil":
+if jenis == "mobil":
     totalBayar = total_waktu * 5000
     
-elif jenis == "Motor":
+elif jenis == "motor":
     totalBayar = total_waktu * 2000
 
 saldo -= totalBayar
