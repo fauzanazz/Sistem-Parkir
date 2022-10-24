@@ -1,5 +1,5 @@
 from HitungWaktu import total_waktu
-from Input import *
+from Input import jenis, saldo
 
 if jenis == "mobil":
     totalBayar = total_waktu * 5000
@@ -7,12 +7,10 @@ if jenis == "mobil":
 elif jenis == "motor":
     totalBayar = total_waktu * 2000
 
-saldo -= totalBayar
-
-if saldo < 0:
+if saldo < totalBayar:
     print("Saldo tidak cukup")
-    saldo += totalBayar
+    
 
-if saldo > 0:
+if saldo > totalBayar:
     print("Pembayaran berhasil")
-
+    saldo -= totalBayar
