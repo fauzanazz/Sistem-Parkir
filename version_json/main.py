@@ -111,7 +111,11 @@ def keluar():
     else:
         print("Maaf saldo anda tidak cukup")
         exit()
+        
+    cls()
 
+    print("============= [PARKING] ==============")
+    print("")
     print(f"Nomor Id        : {no_id}")
     print(f"Jenis kendaraan : {jenis_kendaraan}")
     print(f"Waktu masuk     : {waktu_masuk}")
@@ -119,23 +123,10 @@ def keluar():
     print(f"Durasi          : {lama_parkir}")
     print(f"Tarif           : {tarif_parkir}")
     print(f"Sisa saldo      : {sisa_saldo}")
+    print("")
+    print("======================================")
 
     del data_pengguna[f"{no_id}"]
 
     with open(file_name, "w") as data:
         json.dump(data_pengguna, data, indent = 2)
-
-cls()
-portal = int(input('''
-----------------------
-Masuk [0] | Keluar [1]
-----------------------\n
-'''))
-
-if portal:
-    cls()
-    keluar()
-
-else:
-    cls()
-    masuk()
