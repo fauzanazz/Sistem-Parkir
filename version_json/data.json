@@ -1,14 +1,22 @@
 {
-  "19622283": [
-    {
-      "jenis kendaraan": "mobil",
-      "waktu masuk": "2022-10-25 15:16:34"
-    }
-  ],
-  "19622231": [
-    {
-      "jenis kendaraan": "mobil",
-      "waktu masuk": "2022-10-25 15:16:45"
-    }
-  ]
+  "19622252": {
+    "jenis kendaraan": "mobil",
+    "waktu masuk": "2022-10-25 17:42:29"
+  },
+  "19622253": {
+    "jenis kendaraan": "motor",
+    "waktu masuk": "2022-10-25 17:42:39"
+  },
+  "19622254": {
+    "jenis kendaraan": "motor",
+    "waktu masuk": "2022-10-25 17:42:52"
+  },
+  "19622255": {
+    "jenis kendaraan": "mobil",
+    "waktu masuk": "2022-10-25 17:43:00"
+  },
+  "19622256": {
+    "jenis kendaraan": "mobil",
+    "waktu masuk": "2022-10-25 17:43:07"
+  }
 }

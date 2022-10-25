@@ -45,7 +45,7 @@ def masuk():
     data_pengguna[f"{no_id}"] = {
         "jenis kendaraan": jenis_kendaraan, 
         "waktu masuk": waktu_masuk
-    },
+    }
 
     with open(file_name, "w") as data:
         json.dump(data_pengguna, data, indent = 2)
