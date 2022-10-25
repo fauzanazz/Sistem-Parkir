@@ -10,14 +10,14 @@ def cls():
 
 def durasi(no_id):
 
-    wm = data_pengguna[f"{no_id}"][0]["waktu masuk"]
+    wm = data_pengguna[f"{no_id}"]["waktu masuk"]
     wm = datetime.datetime(int(wm[0:4]), int(wm[5:7]), int(wm[8:10]), int(wm[11:13]), int(wm[14:16]), int(wm[17:19]))
 
     wk = str(datetime.datetime.now())
     wk = datetime.datetime(int(wk[0:4]), int(wk[5:7]), int(wk[8:10]), int(wk[11:13]), int(wk[14:16]), int(wk[17:19]))
 
     with open(file_name, "w") as data:
-        data_pengguna[f"{no_id}"][0]["waktu keluar"] = wk
+        data_pengguna[f"{no_id}"]["waktu keluar"] = wk
 
     return str(wk-wm)
 
@@ -60,9 +60,9 @@ def keluar():
         no_id = input("Masukkan No ID E-Money   : ")
     
     lama_parkir = durasi(no_id)
-    jenis_kendaraan = data_pengguna[f"{no_id}"][0]["jenis kendaraan"]
-    waktu_masuk = data_pengguna[f"{no_id}"][0]["waktu masuk"]
-    waktu_keluar = data_pengguna[f"{no_id}"][0]["waktu keluar"]
+    jenis_kendaraan = data_pengguna[f"{no_id}"]["jenis kendaraan"]
+    waktu_masuk = data_pengguna[f"{no_id}"]["waktu masuk"]
+    waktu_keluar = data_pengguna[f"{no_id}"]["waktu keluar"]
 
     print(f"Id     : {no_id}")
     print(f"Jenis  : {jenis_kendaraan}")
