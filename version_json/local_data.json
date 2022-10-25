@@ -1,8 +1,4 @@
 {
-  "19622252": {
-    "jenis kendaraan": "mobil",
-    "waktu masuk": "2022-10-25 20:27:21"
-  },
   "19622253": {
     "jenis kendaraan": "motor",
     "waktu masuk": "2022-10-25 20:27:28"
@@ -18,5 +14,9 @@
   "19622256": {
     "jenis kendaraan": "motor",
     "waktu masuk": "2022-10-25 20:28:05"
+  },
+  "19622257": {
+    "jenis kendaraan": "motor",
+    "waktu masuk": "2022-10-25 20:59:21"
   }
 }
