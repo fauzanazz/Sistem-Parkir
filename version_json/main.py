@@ -1,9 +1,13 @@
-import json ; import datetime ; import os
+import os ; import json ; import datetime ; import time
 
-file_name = "data.json"
+file_name = "local_data.json"
+file_emoney = "emoney_data.json"
 
 with open(file_name, "r") as data:
         data_pengguna = json.load(data)
+
+with open(file_emoney, "r") as data_valid:
+        data_emoney = json.load(data_valid)
 
 def cls():
     os.system("cls")
@@ -12,18 +16,44 @@ def durasi(no_id):
 
     wm = data_pengguna[f"{no_id}"]["waktu masuk"]
     wm = datetime.datetime(int(wm[0:4]), int(wm[5:7]), int(wm[8:10]), int(wm[11:13]), int(wm[14:16]), int(wm[17:19]))
+    
+    global wk
 
     wk = str(datetime.datetime.now())
     wk = datetime.datetime(int(wk[0:4]), int(wk[5:7]), int(wk[8:10]), int(wk[11:13]), int(wk[14:16]), int(wk[17:19]))
+    
+    return wk-wm
 
-    with open(file_name, "w") as data:
-        data_pengguna[f"{no_id}"]["waktu keluar"] = wk
+def tarif(lama_parkir, jenis_kendaraan):
 
-    return str(wk-wm)
+    if jenis_kendaraan == "mobil":
+        tarif_1jam = 5000
+        tarif_berikutnya = 4000
+    else:
+        tarif_1jam = 3000
+        tarif_berikutnya = 2000
+        
+    lama_parkir = lama_parkir.total_seconds()
 
-def check(no_id):
+    jam_parkir = lama_parkir//3600
 
-    file_name = "data.json"
+    menit_parkir = lama_parkir%3600//60
+
+    if jam_parkir == 0 and menit_parkir < 5:
+        return 0
+    elif jam_parkir == 0:
+        return tarif_1jam
+    else:
+        return tarif_1jam + tarif_berikutnya*jam_parkir
+
+def valid(no_id):
+
+    if no_id not in data_emoney.keys():
+        return False
+    else:
+        return True
+
+def sudah_terpakai(no_id):
 
     if no_id in data_pengguna.keys():
         return True
@@ -34,12 +64,15 @@ def masuk():
 
     no_id = input("Masukkan No ID E-Money   : ")
 
-    while check(no_id):
+    while sudah_terpakai(no_id) or not valid(no_id):
         cls()
-        print("E-Money Card kamu sudah terpakai, silakan gunakan yang lain")
+        if sudah_terpakai(no_id):
+            print("E-Money Card kamu sudah terpakai, silakan gunakan yang lain")
+        else:
+            print("E-Money kamu tidak valid, silakan gunakan yang lain")
         no_id = input("Masukkan No ID E-Money   : ")
 
-    jenis_kendaraan = input("Masukkan Jenis Kendaraan : ").lower() # 1=mobil ; 2=motor
+    jenis_kendaraan = input("Masukkan Jenis Kendaraan : ").lower() 
     waktu_masuk = str(datetime.datetime.now()) ; waktu_masuk = waktu_masuk[0:19]
 
     data_pengguna[f"{no_id}"] = {
@@ -54,7 +87,7 @@ def keluar():
 
     no_id = input("Masukkan No ID E-Money   : ")
 
-    while check(no_id) == False:
+    while sudah_terpakai(no_id) == False:
         cls()
         print("E-Money Card kamu tidak terdaftar, silakan gunakan yang lain")
         no_id = input("Masukkan No ID E-Money   : ")
@@ -62,17 +95,33 @@ def keluar():
     lama_parkir = durasi(no_id)
     jenis_kendaraan = data_pengguna[f"{no_id}"]["jenis kendaraan"]
     waktu_masuk = data_pengguna[f"{no_id}"]["waktu masuk"]
-    waktu_keluar = data_pengguna[f"{no_id}"]["waktu keluar"]
+    waktu_keluar = wk
 
-    print(f"Id     : {no_id}")
-    print(f"Jenis  : {jenis_kendaraan}")
-    print(f"Masuk  : {waktu_masuk}")
-    print(f"Keluar : {waktu_keluar}")
-    print(f"Durasi : {lama_parkir}")
+    tarif_parkir = int(tarif(lama_parkir, jenis_kendaraan))
 
+    if  data_emoney[f"{no_id}"]["saldo"] >= tarif_parkir:
+
+        sisa_saldo = data_emoney[f"{no_id}"]["saldo"] - tarif_parkir
+
+        data_emoney[f"{no_id}"]["saldo"] = sisa_saldo
+
+        with open(file_emoney, "w") as data_valid:
+            json.dump(data_emoney, data_valid, indent = 2)
+    
+    else:
+        print("Maaf saldo anda tidak cukup")
+        exit()
+
+    print(f"Nomor Id        : {no_id}")
+    print(f"Jenis kendaraan : {jenis_kendaraan}")
+    print(f"Waktu masuk     : {waktu_masuk}")
+    print(f"Waktu keluar    : {waktu_keluar}")
+    print(f"Durasi          : {lama_parkir}")
+    print(f"Tarif           : {tarif_parkir}")
+    print(f"Sisa saldo      : {sisa_saldo}")
 
     del data_pengguna[f"{no_id}"]
- 
+
     with open(file_name, "w") as data:
         json.dump(data_pengguna, data, indent = 2)
 
@@ -86,6 +135,7 @@ Masuk [0] | Keluar [1]
 if portal:
     cls()
     keluar()
+
 else:
     cls()
     masuk()
