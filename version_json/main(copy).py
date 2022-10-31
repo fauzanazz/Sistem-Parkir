@@ -1,5 +1,4 @@
-import os ; import json ; import datetime
-from sre_parse import State ; import time
+import os ; import json ; import datetime ; import time
 
 file_name = "local_data.json"
 file_emoney = "emoney_data.json"
@@ -61,20 +60,19 @@ def sudah_terpakai(no_id):
     else:
         return False
 
-def masuk(no_id, jenis_kendaraan):
+def masuk():
 
-    # no_id = input("Masukkan No ID E-Money   : ")
+    no_id = input("Masukkan No ID E-Money   : ")
 
-    print(no_id)
-    print(type(no_id))
+    while sudah_terpakai(no_id) or not valid(no_id):
+        cls()
+        if sudah_terpakai(no_id):
+            print("E-Money Card kamu sudah terpakai, silakan gunakan yang lain")
+        else:
+            print("E-Money kamu tidak valid, silakan gunakan yang lain")
+        no_id = input("Masukkan No ID E-Money   : ")
 
-    print(jenis_kendaraan)
-    print(type(jenis_kendaraan))
-
-    # if not sudah_terpakai(no_id) and valid(no_id):
-
-    jenis_kendaraan = jenis_kendaraan.lower()
-
+    jenis_kendaraan = input("Masukkan Jenis Kendaraan : ").lower() 
     waktu_masuk = str(datetime.datetime.now()) ; waktu_masuk = waktu_masuk[0:19]
 
     data_pengguna[f"{no_id}"] = {
@@ -85,8 +83,15 @@ def masuk(no_id, jenis_kendaraan):
     with open(file_name, "w") as data:
         json.dump(data_pengguna, data, indent = 2)
 
-def keluar(no_id): 
-   
+def keluar(): 
+
+    no_id = input("Masukkan No ID E-Money   : ")
+
+    while sudah_terpakai(no_id) == False:
+        cls()
+        print("E-Money Card kamu tidak terdaftar, silakan gunakan yang lain")
+        no_id = input("Masukkan No ID E-Money   : ")
+    
     lama_parkir = durasi(no_id)
     jenis_kendaraan = data_pengguna[f"{no_id}"]["jenis kendaraan"]
     waktu_masuk = data_pengguna[f"{no_id}"]["waktu masuk"]
@@ -105,7 +110,6 @@ def keluar(no_id):
     
     else:
         print("Maaf saldo anda tidak cukup")
-        print(tarif_parkir)
         exit()
         
     cls()

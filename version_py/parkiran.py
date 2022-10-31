@@ -6,8 +6,8 @@ import os
 bulan30 = [4, 6, 9, 11]           # bulan yang harinya 30
 bulan31 = [1, 3, 5, 7, 8, 10 ,12] # bulan yang harinys 31
 
-list_kabisat = []
-for i in range(1, 2050):
+list_kabisat = [] # list tahun kabisat
+for i in range(1, 9999):
     kabisat = True
     if i % 4 != 0:
         kabisat = False
@@ -20,6 +20,9 @@ for i in range(1, 2050):
 # input waktu masuk
  
 os.system("cls")
+
+print("============= [PARKING] =============")
+print("             PINTU MASUK           \n")
     
 tahun_masuk     = int(input("Tahun masuk     : "))
 bulan_masuk     = int(input("Bulan masuk     : "))
@@ -53,7 +56,8 @@ waktu_masuk += jam_masuk*3600 + menit_masuk*60 + detik_masuk
 #=============================================================== 
 # input waktu keluar
 
-print()
+print("\n============= [PARKING] =============")
+print("            PINTU KELUAR             \n")
 
 tahun_keluar   = int(input("Tahun keluar    : "))
 bulan_keluar   = int(input("Bulan keluar    : "))
@@ -163,10 +167,23 @@ if detik_keluar < 10:
 
 os.system("cls")
 
-if saldo_cukup:
+if durasi < 0 or tahun_keluar < tahun_masuk:
 
     print("============= [PARKING] =============")
     print("")
+    print("Data yang anda masukkan tidak valid.")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("=====================================")
+
+elif saldo_cukup:
+
+    print("============= [PARKING] =============")
+    print("            SELAMAT JALAN           \n")
     print(f"Jenis kendaraan : {jenis_kendaraan}")
     print(f"Waktu masuk     : {tanggal_masuk}/{bulan_masuk}/{tahun_masuk} {jam_masuk}:{menit_masuk}:{detik_masuk}")
     print(f"Waktu keluar    : {tanggal_keluar}/{bulan_keluar}/{tahun_keluar} {jam_keluar}:{menit_keluar}:{detik_keluar}")
@@ -176,14 +193,12 @@ if saldo_cukup:
     print("")
     print("=====================================")
 
-    print(durasi)
-
 else:
 
     print("============= [PARKING] =============")
     print("")
     print("Saldo anda tidak cukup.")
-    print("")
+    print(f"Tarif : {tarif}")
     print("")
     print("")
     print("")
