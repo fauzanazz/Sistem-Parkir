@@ -102,27 +102,27 @@ def keluar(no_id):
 
         with open(file_emoney, "w") as data_valid:
             json.dump(data_emoney, data_valid, indent = 2)
+
+        cls()
+
+        print("============= [PARKING] ==============")
+        print("")
+        print(f"Nomor Id        : {no_id}")
+        print(f"Jenis kendaraan : {jenis_kendaraan}")
+        print(f"Waktu masuk     : {waktu_masuk}")
+        print(f"Waktu keluar    : {waktu_keluar}")
+        print(f"Durasi          : {lama_parkir}")
+        print(f"Tarif           : {tarif_parkir}")
+        print(f"Sisa saldo      : {sisa_saldo}")
+        print("")
+        print("======================================")
+
+        del data_pengguna[f"{no_id}"]
+
+        with open(file_name, "w") as data:
+            json.dump(data_pengguna, data, indent = 2)
     
     else:
         print("Maaf saldo anda tidak cukup")
         print(tarif_parkir)
-        exit()
         
-    cls()
-
-    print("============= [PARKING] ==============")
-    print("")
-    print(f"Nomor Id        : {no_id}")
-    print(f"Jenis kendaraan : {jenis_kendaraan}")
-    print(f"Waktu masuk     : {waktu_masuk}")
-    print(f"Waktu keluar    : {waktu_keluar}")
-    print(f"Durasi          : {lama_parkir}")
-    print(f"Tarif           : {tarif_parkir}")
-    print(f"Sisa saldo      : {sisa_saldo}")
-    print("")
-    print("======================================")
-
-    del data_pengguna[f"{no_id}"]
-
-    with open(file_name, "w") as data:
-        json.dump(data_pengguna, data, indent = 2)
