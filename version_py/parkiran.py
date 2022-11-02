@@ -1,13 +1,12 @@
-import os 
-
 #=============================================================== 
-# data bulan, tahun
+# data banyak hari pada bulan
+# data tahun yang kabisat
 
 bulan30 = [4, 6, 9, 11]           # bulan yang harinya 30
 bulan31 = [1, 3, 5, 7, 8, 10 ,12] # bulan yang harinys 31
 
 list_kabisat = [] # list tahun kabisat
-for i in range(1, 9999):
+for i in range(1, 10000):
     kabisat = True
     if i % 4 != 0:
         kabisat = False
@@ -19,9 +18,7 @@ for i in range(1, 9999):
 #=============================================================== 
 # input waktu masuk
  
-os.system("cls")
-
-print("============= [PARKING] =============")
+print("\n============= [PARKING] =============")
 print("             PINTU MASUK           \n")
     
 tahun_masuk     = int(input("Tahun masuk     : "))
@@ -32,14 +29,16 @@ menit_masuk     = int(input("Menit masuk     : "))
 detik_masuk     = int(input("Detik masuk     : "))
 jenis_kendaraan =     input("Jenis kendaraan : ")
 
-#=============================================================== 
-# mengkonvesi waktu masuk menjadi detik
+print("\n=====================================")
 
-waktu_masuk = 0 # waktu masuk dalam detik
+#=============================================================== 
+# mengkonvesi waktu masuk mke satuan detik
+
+waktu_masuk = 0 # waktu masuk dalam satuan detik
 
 for bulan in range(1, bulan_masuk):
     if bulan in bulan30:
-        waktu_masuk += 2_592_000
+        waktu_masuk += 2_592_000 
     elif bulan in bulan31:
         waktu_masuk += 2_678_400
     else:
@@ -56,7 +55,7 @@ waktu_masuk += jam_masuk*3600 + menit_masuk*60 + detik_masuk
 #=============================================================== 
 # input waktu keluar
 
-print("\n============= [PARKING] =============")
+print("\n\n============= [PARKING] =============")
 print("            PINTU KELUAR             \n")
 
 tahun_keluar   = int(input("Tahun keluar    : "))
@@ -67,10 +66,12 @@ menit_keluar   = int(input("Menit keluar    : "))
 detik_keluar   = int(input("Detik keluar    : "))
 saldo_emoney   = int(input("Saldo E-Money   : "))
 
-#=============================================================== 
-# mengkonversi waktu keluar menjadi detik
+print("\n=====================================")
 
-waktu_keluar = 0 # waktu keluar dalam detik
+#=============================================================== 
+# mengkonversi waktu keluar ke satuan detik
+
+waktu_keluar = 0 # waktu keluar dalam satuan detik
 
 for tahun in range(tahun_masuk, tahun_keluar):
     if tahun in list_kabisat:
@@ -95,9 +96,9 @@ if tanggal_keluar > 1:
 waktu_keluar += jam_keluar*3600 + menit_keluar*60 + detik_keluar
 
 #=============================================================== 
-# menghitung durasi parkir 
+# menghitung durasi parkir
 
-durasi = waktu_keluar - waktu_masuk
+durasi = waktu_keluar - waktu_masuk # (dalam satuan detik)
 
 durasi_jam = durasi // 3600
 durasi_menit = durasi % 3600 // 60
@@ -109,14 +110,18 @@ durasi_detik = durasi % 3600 % 60
 if jenis_kendaraan == "mobil":
     tarif_1jam = 5000
     tarif_berikutnya = 4000
+    tarif_inap = 50000 
 else: # jenis_kendaraan == "motor":
     tarif_1jam = 3000
     tarif_berikutnya = 2000
-    
-if durasi_jam == 0 and durasi_menit < 5:
-    tarif = 0 # gratis
+    tarif_inap = 40000
+
+if durasi > 86_400: # masuk ke tarif inap (sehari = 86400 detik)
+    tarif = (durasi_jam//24 + 1)*tarif_inap
+elif durasi_jam == 0 and durasi_menit < 5: 
+    tarif = 0 # di bawah 5 menit gratis
 elif durasi_jam == 0:
-    tarif = tarif_1jam
+    tarif = tarif_1jam # di bawah 1 jam masuk tarif jam pertama
 else:
     tarif = tarif_1jam + tarif_berikutnya*durasi_jam
 
@@ -130,7 +135,12 @@ else:
     saldo_cukup = False
 
 #=============================================================== 
-# reformat angka
+# reformat angka 
+
+# untuk cetak resi nanti agar tampak lebih rapih karena ada 
+# angka nol di depan angka yang hanya satu digit
+#
+# contohnya angka 7 menjadi 07 saat dicetak
 
 if tanggal_masuk < 10:
     tanggal_masuk = f"0{tanggal_masuk}"
@@ -163,13 +173,34 @@ if detik_keluar < 10:
     detik_keluar = f"0{detik_keluar}"
 
 #===============================================================
+# cetak tarif parkir
+
+print("\n\n============= [PARKING] =============")
+print("")
+print("TARIF PARKIR")
+print("")
+print("*Mobil")
+print("Rp 5.000 / Jam pertama")
+print("Rp 4.000 / Jam berikutnya")
+print("")
+print("*Motor")
+print("Rp 3.000 / Jam pertama")
+print("Rp 2.000 / Jam berikutnyaa")
+print("")
+print("TARIF INAP")
+print("")
+print("*Mobil : Rp 50.000 / Hari")
+print("*Motor : Rp 40.000 / Hari")
+print("")
+print("=====================================")
+
+#===============================================================
 # cetak resi
 
-os.system("cls")
+if durasi < 0 or tahun_keluar < tahun_masuk: 
+    # data tidak valid karena durasi parkir negatif
 
-if durasi < 0 or tahun_keluar < tahun_masuk:
-
-    print("============= [PARKING] =============")
+    print("\n\n============= [PARKING] =============")
     print("")
     print("Data yang anda masukkan tidak valid.")
     print("")
@@ -181,8 +212,9 @@ if durasi < 0 or tahun_keluar < tahun_masuk:
     print("=====================================")
 
 elif saldo_cukup:
+    # output jika saldo cukup
 
-    print("============= [PARKING] =============")
+    print("\n\n============= [PARKING] =============")
     print("            SELAMAT JALAN           \n")
     print(f"Jenis kendaraan : {jenis_kendaraan}")
     print(f"Waktu masuk     : {tanggal_masuk}/{bulan_masuk}/{tahun_masuk} {jam_masuk}:{menit_masuk}:{detik_masuk}")
@@ -194,8 +226,9 @@ elif saldo_cukup:
     print("=====================================")
 
 else:
+    # output jika saldo tidak cukup
 
-    print("============= [PARKING] =============")
+    print("\n\n============= [PARKING] =============")
     print("")
     print("Saldo anda tidak cukup.")
     print(f"Tarif : {tarif}")
